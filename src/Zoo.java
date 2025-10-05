@@ -3,29 +3,44 @@ public class Zoo {
     private String name;
     private String city;
     private int animalCount = 0;
-    public static final int NBR_CAGES = 25; // constante
+    public static final int NBR_CAGES = 25; // Instruction 14
 
-    // Constructeurs
-    public Zoo() {}
-
+    // Constructeur avec validation (Instruction 18)
     public Zoo(String name, String city) {
-        this.name = name;
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        } else {
+            System.out.println("Erreur : le nom du zoo ne peut pas être vide !");
+            this.name = "Zoo_SansNom";
+        }
         this.city = city;
     }
 
-    // Afficher infos du zoo
-    public void displayZoo() {
-        System.out.println("Zoo : " + name + ", Ville : " + city + ", Cages : " + NBR_CAGES);
+    // Setters pour modification (Instruction 18)
+    public void setName(String name) {
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        } else {
+            System.out.println("⚠️ Nom invalide.");
+        }
+    }
+
+    public void setCity(String city) {
+        if (city != null && !city.trim().isEmpty()) {
+            this.city = city;
+        } else {
+            System.out.println("⚠️ Ville invalide.");
+        }
     }
 
     @Override
     public String toString() {
-        return "Zoo [Nom=" + name + ", Ville=" + city + ", Nombre cages=" + NBR_CAGES + ", Animaux=" + animalCount + "]";
+        return "Zoo [Nom=" + name + ", Ville=" + city + ", Animaux=" + animalCount + "]";
     }
 
-    // Instruction 10 - Ajouter un animal
+    // Instruction 10, 12 et 17 - Ajouter un animal
     public boolean addAnimal(Animal animal) {
-        if (animalCount >= NBR_CAGES) {
+        if (isZooFull()) { // utilise isZooFull
             System.out.println("Zoo plein, impossible d'ajouter " + animal.getName());
             return false;
         }
@@ -40,7 +55,7 @@ public class Zoo {
         return true;
     }
 
-    // Instruction 11 - Afficher les animaux
+    // Instruction 11 - Afficher animaux
     public void afficherAnimals() {
         if (animalCount == 0) {
             System.out.println("Aucun animal dans le zoo.");
@@ -68,7 +83,6 @@ public class Zoo {
             System.out.println("Animal non trouvé : " + animal.getName());
             return false;
         }
-        // Décalage à gauche
         for (int j = index; j < animalCount - 1; j++) {
             animals[j] = animals[j + 1];
         }
@@ -77,7 +91,7 @@ public class Zoo {
         return true;
     }
 
-    // Instruction 15 - Vérifier si le zoo est plein
+    // Instruction 15 - Vérifier si zoo est plein
     public boolean isZooFull() {
         return animalCount >= NBR_CAGES;
     }

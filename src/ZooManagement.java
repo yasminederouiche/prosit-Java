@@ -1,63 +1,156 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ZooManagement {
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        ArrayList<Zoo> zoos = new ArrayList<>(); // plusieurs zoos possibles
 
-        System.out.print("Entrez le nom du zoo : ");
-        String zooName = sc.nextLine();
+        int choix;
+        do {
+            System.out.println("\n=== Menu Gestion Zoo ===");
+            System.out.println("1. Ajouter un zoo");
+            System.out.println("2. Afficher les zoos");
+            System.out.println("3. Modifier un zoo");
+            System.out.println("4. Supprimer un zoo");
+            System.out.println("5. Comparer deux zoos");
+            System.out.println("0. Quitter");
+            System.out.print("Votre choix : ");
+            choix = sc.nextInt();
+            sc.nextLine();
 
-        Zoo myZoo = new Zoo(zooName, "Tunis");
+            switch (choix) {
+                case 1:
+                    // Ajouter un zoo
+                    System.out.print("Nom du zoo : ");
+                    String name = sc.nextLine();
+                    System.out.print("Ville du zoo : ");
+                    String city = sc.nextLine();
+                    zoos.add(new Zoo(name, city));
+                    System.out.println("✅ Zoo ajouté avec succès !");
+                    break;
 
-        // Création d’animaux
-        Animal lion = new Animal("Félidé", "Lion", 5, true);
-        Animal tigre = new Animal("Félidé", "Tigre", 4, true);
-        Animal aigle = new Animal("Oiseau", "Aigle", 3, false);
-        Animal lion2 = new Animal("Félidé", "Lion", 5, true); // identique au premier
+                case 2:
+                    // Afficher tous les zoos
+                    if (zoos.isEmpty()) {
+                        System.out.println("⚠️ Aucun zoo enregistré.");
+                    } else {
+                        for (int i = 0; i < zoos.size(); i++) {
+                            System.out.println(i + " - " + zoos.get(i));
+                        }
+                    }
+                    break;
 
-        // Instruction 10 : test ajout
-        System.out.println("\n--- Test Ajout ---");
-        myZoo.addAnimal(lion);
-        myZoo.addAnimal(tigre);
-        myZoo.addAnimal(aigle);
-        myZoo.addAnimal(lion2); // doit afficher "Animal déjà existant"
+                case 3:
+                    // Modifier un zoo
+                    if (zoos.isEmpty()) {
+                        System.out.println("⚠️ Aucun zoo à modifier.");
+                        break;
+                    }
+                    System.out.print("Entrez l'index du zoo à modifier : ");
+                    int indexModif = sc.nextInt();
+                    sc.nextLine();
+                    if (indexModif >= 0 && indexModif < zoos.size()) {
+                        Zoo z = zoos.get(indexModif);
+                        System.out.println("Zoo sélectionné : " + z);
 
-        // Remplissage volontaire pour tester zoo plein
-        for (int i = 0; i < 30; i++) {
-            myZoo.addAnimal(new Animal("Test", "Animal" + i, i, true));
-        }
+                        System.out.println("1. Changer le nom");
+                        System.out.println("2. Changer la ville");
+                        System.out.println("3. Ajouter un animal");
+                        System.out.println("4. Supprimer un animal");
+                        System.out.println("5. Afficher les animaux");
+                        System.out.print("Choix : ");
+                        int action = sc.nextInt();
+                        sc.nextLine();
 
-        // Instruction 11 : affichage et recherche
-        System.out.println("\n--- Animaux du zoo ---");
-        myZoo.afficherAnimals();
+                        switch (action) {
+                            case 1:
+                                System.out.print("Nouveau nom : ");
+                                String newName = sc.nextLine();
+                                z.setName(newName);
+                                break;
+                            case 2:
+                                System.out.print("Nouvelle ville : ");
+                                String newCity = sc.nextLine();
+                                z.setCity(newCity);
+                                break;
+                            case 3:
+                                System.out.print("Famille de l'animal : ");
+                                String fam = sc.nextLine();
+                                System.out.print("Nom de l'animal : ");
+                                String aniName = sc.nextLine();
+                                System.out.print("Âge : ");
+                                int age = sc.nextInt();
+                                System.out.print("Mammifère ? (true/false) : ");
+                                boolean mammif = sc.nextBoolean();
+                                sc.nextLine();
+                                z.addAnimal(new Animal(fam, aniName, age, mammif));
+                                break;
+                            case 4:
+                                z.afficherAnimals();
+                                System.out.print("Nom de l'animal à supprimer : ");
+                                String aniDel = sc.nextLine();
+                                z.removeAnimal(new Animal("", aniDel, 0, false));
+                                break;
+                            case 5:
+                                z.afficherAnimals();
+                                break;
+                        }
+                    } else {
+                        System.out.println("⚠️ Index invalide.");
+                    }
+                    break;
 
-        System.out.println("\n--- Recherche ---");
-        int index = myZoo.searchAnimal(lion);
-        System.out.println("Résultat recherche Lion : " + index);
+                case 4:
+                    // Supprimer un zoo
+                    if (zoos.isEmpty()) {
+                        System.out.println("⚠️ Aucun zoo à supprimer.");
+                    } else {
+                        System.out.print("Entrez l'index du zoo à supprimer : ");
+                        int indexSup = sc.nextInt();
+                        sc.nextLine();
+                        if (indexSup >= 0 && indexSup < zoos.size()) {
+                            zoos.remove(indexSup);
+                            System.out.println("✅ Zoo supprimé !");
+                        } else {
+                            System.out.println("⚠️ Index invalide.");
+                        }
+                    }
+                    break;
 
-        // Recherche d’un animal identique
-        index = myZoo.searchAnimal(lion2);
-        System.out.println("Résultat recherche Lion2 : " + index);
+                case 5:
+                    // Comparer deux zoos
+                    if (zoos.size() < 2) {
+                        System.out.println("⚠️ Il faut au moins deux zoos pour comparer.");
+                    } else {
+                        System.out.print("Index du premier zoo : ");
+                        int i1 = sc.nextInt();
+                        System.out.print("Index du deuxième zoo : ");
+                        int i2 = sc.nextInt();
+                        sc.nextLine();
 
-        // Instruction 13 : suppression
-        System.out.println("\n--- Suppression ---");
-        myZoo.removeAnimal(tigre);
-        myZoo.afficherAnimals();
+                        if (i1 >= 0 && i1 < zoos.size() && i2 >= 0 && i2 < zoos.size()) {
+                            Zoo bigger = Zoo.compareZoo(zoos.get(i1), zoos.get(i2));
+                            if (bigger != null) {
+                                System.out.println("Le plus grand zoo est : " + bigger);
+                            }
+                        } else {
+                            System.out.println("⚠️ Index(s) invalide(s).");
+                        }
+                    }
+                    break;
 
-        // Instruction 15 : vérification si zoo plein
-        System.out.println("\nZoo plein ? " + myZoo.isZooFull());
+                case 0:
+                    System.out.println("👋 Fin du programme.");
+                    break;
 
-        // Instruction 16 : comparaison de zoos
-        Zoo otherZoo = new Zoo("Zoo Bizerte", "Bizerte");
-        otherZoo.addAnimal(new Animal("Canidé", "Loup", 6, true));
+                default:
+                    System.out.println("❌ Choix invalide !");
+            }
 
-        System.out.println("\n--- Comparaison ---");
-        Zoo bigger = Zoo.compareZoo(myZoo, otherZoo);
-        if (bigger != null) {
-            System.out.println("Le plus grand zoo est : " + bigger);
-        }
+        } while (choix != 0);
 
         sc.close();
     }
 }
+
