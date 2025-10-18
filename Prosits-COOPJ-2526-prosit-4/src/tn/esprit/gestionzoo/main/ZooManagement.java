@@ -57,7 +57,7 @@ public class ZooManagement {
             System.out.println("Les deux zoos ont le même nombre d'animaux.");
 
         // ---------- Hiérarchie animale ----------
-        Aquatic aquatic = new Aquatic("Poisson", "Nemo", 2, false, "Mer");
+        Fish aquatic = new Fish("Poisson", "Nemo", 2, false, "Mer", "Clownfish");
         Terrestrial terrestrial = new Terrestrial("Félin", "Tigre", 7, true, 4);
         Dolphin dolphin = new Dolphin("Cétacé", "Dolly", 5, true, "Océan", 25.5f);
         Penguin penguin = new Penguin("Oiseau", "Pingu", 3, false, "Antarctique", 50.0f);
@@ -72,6 +72,7 @@ public class ZooManagement {
         aquatic.swim();
         dolphin.swim();
         penguin.swim();
+
 
         sc.close();
     }

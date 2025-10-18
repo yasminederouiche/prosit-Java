@@ -1,21 +1,23 @@
 package tn.esprit.gestionzoo.entities;
 
-public class Aquatic extends Animal {
+public abstract class Aquatic extends Animal {
     protected String habitat;
-
-    public Aquatic() {}
 
     public Aquatic(String family, String name, int age, boolean isMammal, String habitat) {
         super(family, name, age, isMammal);
         this.habitat = habitat;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + " | Habitat=" + habitat;
+    public String getHabitat() {
+        return habitat;
     }
 
-    public void swim() {
-        System.out.println("This aquatic animal is swimming.");
+    public abstract void swim();
+
+    @Override
+    public String toString() {
+        return "Aquatic{" + super.toString() + ", habitat='" + habitat + "'}";
     }
+
+    // Optionnel : tu peux garder une version d'equals() spécifique, mais Animal.equals couvre déjà les champs de base.
 }
